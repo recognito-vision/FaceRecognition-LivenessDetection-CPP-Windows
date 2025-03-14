@@ -51,7 +51,10 @@ int main()
         printAttributes(faceBoxes1[0]);
         ttv_feature_extract(image1, faceBoxes1[0].landmark, feat1);
     }
-    
+    cv::rectangle(image1, cv::Point((int)faceBoxes1[0].x1, (int)faceBoxes1[0].y1), cv::Point((int)faceBoxes1[0].x2, (int)faceBoxes1[0].y2), cv::Scalar(0,255,0), 2);
+    cv::putText(image1, (faceBoxes1[0].liveness > 0.7) ? "Real" : "Fake", cv::Point((int)faceBoxes1[0].x1, (int)faceBoxes1[0].y1), cv::FONT_HERSHEY_COMPLEX_SMALL,
+        1, (faceBoxes1[0].liveness > 0.7) ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), 1);
+    cv::imshow("Face1", image1);
     printf("\n\n");
 
     printf(" --------------   Image 2  ----------------- \n");
@@ -67,10 +70,17 @@ int main()
         printAttributes(faceBoxes2[0]);
         ttv_feature_extract(image2, faceBoxes2[0].landmark, feat2);
     }
-   
+    cv::rectangle(image2, cv::Point((int)faceBoxes2[0].x1, (int)faceBoxes2[0].y1), cv::Point((int)faceBoxes2[0].x2, (int)faceBoxes2[0].y2), cv::Scalar(0, 255, 0), 2);
+    cv::putText(image2, (faceBoxes2[0].liveness > 0.7) ? "Real" : "Fake", cv::Point((int)faceBoxes2[0].x1, (int)faceBoxes2[0].y1), cv::FONT_HERSHEY_COMPLEX_SMALL,
+        1, (faceBoxes2[0].liveness > 0.7) ? cv::Scalar(0, 255, 0) : cv::Scalar(0, 0, 255), 1);
+    cv::imshow("Face2", image2);
+
     printf("\n ==============   Matching Score  ================\n");
     float score = ttv_compare_feature(feat1, feat2);
     printf("score: %f\n %s\n", score, score >= 80 ? "Same Person": "Different Person");
+
+    cv::waitKey(0);
+    cv::destroyAllWindows();
     return 0;
 }
 
